@@ -11,7 +11,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     // clickHandler logic
     var songNumber = parseInt($(this).attr('data-song-number'));
     setSong(songNumber);
-    
+
     if (currentlyPlayingSongNumber !== null) {
       // Revert to song number for currently playing song because user started playing new song.
       var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
@@ -112,7 +112,7 @@ var nextSong = function() {
   setSong(currentSongIndex + 1);
 
   currentSoundFile.play();
-  
+
   // Update the Player Bar information
   updatePlayerBarSong();
 
@@ -141,7 +141,7 @@ var previousSong = function() {
   setSong(currentSongIndex + 1);
 
   currentSoundFile.play();
-  
+
   // Update the Player Bar information
   updatePlayerBarSong();
 
@@ -156,7 +156,7 @@ var previousSong = function() {
   isPlaying = false;
 };
 
-var playPauseSong = function() {
+var togglePlayFromPlayerBar = function() {
 
   var $CurrentSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber)
   if(isPlaying)
@@ -235,5 +235,5 @@ $(document).ready(function() {
   setCurrentAlbum(albumPicasso);
   $previousButton.click(previousSong);
   $nextButton.click(nextSong);
-  $playPauseButton.click(playPauseSong);
+  $playPauseButton.click(togglePlayFromPlayerBar);
 });
