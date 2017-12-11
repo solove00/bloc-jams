@@ -3,7 +3,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     '<tr class="album-view-song-item">' +
     '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' +
     '  <td class="song-item-title">' + songName + '</td>' +
-    '  <td class="song-item-duration">' + songLength + '</td>' +
+    '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>' +
     '</tr>';
 
   var $row = $(template);
@@ -56,6 +56,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     // Placeholder for function logic
     var songNumberCell = $(this).find('.song-item-number');
     var songNumber = parseInt($(this).attr('data-song-number'));
+    
     if (songNumber !== currentlyPlayingSongNumber) {
       songNumberCell.html(songNumber);
     }
@@ -189,7 +190,7 @@ var updatePlayerBarSong = function() {
   $('.currently-playing .artist-name').text(currentAlbum.artist);
   $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
   $('.main-controls .play-pause').html(playerBarPauseButton);
-
+  setTotalTimeInPlayerBar(currentSongFromAlbum.duration);
 };
 
 var setSong = function(songNumber) {
@@ -264,6 +265,8 @@ var updateSeekBarWhileSongPlays = function() {
           var $seekBar = $('.seek-control .seek-bar');
 
           updateSeekPercentage($seekBar, seekBarFillRatio);
+
+          setCurrentTimeInPlayerBar(this.getTime());
       });
   }
 };
@@ -293,6 +296,32 @@ var setInitialSeekBar = function()
   var $volumeThumb = $('.volume .thumb');
   $volumeFill.width(currentVolume + '%');
   $volumeThumb.css({left: currentVolume + '%'});
+}
+
+var setCurrentTimeInPlayerBar = function(currentTime)
+{
+  $('.current-time').text(filterTimeCode(currentTime));
+}
+
+var setTotalTimeInPlayerBar = function(totalTime)
+{
+  $('.total-time').text(filterTimeCode(totalTime));
+}
+
+var filterTimeCode = function(timeInSeconds)
+{
+  var timeFloat = parseFloat(timeInSeconds);
+  var formattedNumber = Math.floor(timeFloat/60) + ":";
+  var seconds = Math.floor(timeFloat)%60;
+  if(seconds < 10)
+  {
+    formattedNumber = formattedNumber + "0" + seconds;
+  }
+  else
+  {
+    formattedNumber = formattedNumber + seconds;
+  }
+  return  formattedNumber;
 }
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
